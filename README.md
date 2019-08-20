@@ -3,7 +3,7 @@
 ## Burrows Wheeler Transform (BWT)
 
 ```
-$ npm run bwt
+$ yarn run bwt
 ```
 
 - references
@@ -12,7 +12,7 @@ $ npm run bwt
 ## LZ77
 
 ```
-$ npm run lz77
+$ yarn run lz77
 ```
 
 - references
@@ -21,9 +21,8 @@ $ npm run lz77
 ## Static Huffman Coding
 
 ```
-# npm run shc
+# yarn run shc
 ```
 
 - references
   - https://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%95%E3%83%9E%E3%83%B3%E7%AC%A6%E5%8F%B7
-  
