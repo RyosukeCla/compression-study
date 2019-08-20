@@ -1,0 +1,21 @@
+{
+  "name": "compression-study",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "bwt": "ts-node ./src/burrows-wheeler-transform.ts",
+    "lzw": "ts-node ./src/lempel-ziv-welch.ts",
+    "lz77": "ts-node ./src/lz77.ts"
+  },
+  "dependencies": {
+    "googleapis": "^42.0.0",
+    "puppeteer-core": "^1.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.6.9",
+    "prettier": "1.18.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  }
+}
