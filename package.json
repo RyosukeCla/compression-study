@@ -6,7 +6,8 @@
   "scripts": {
     "bwt": "ts-node ./src/burrows-wheeler-transform.ts",
     "lzw": "ts-node ./src/lempel-ziv-welch.ts",
-    "lz77": "ts-node ./src/lz77.ts"
+    "lz77": "ts-node ./src/lz77.ts",
+    "shc": "ts-node ./src/static-huffman-coding.ts"
   },
   "dependencies": {
     "googleapis": "^42.0.0",
