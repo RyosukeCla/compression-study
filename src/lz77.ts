@@ -10,7 +10,9 @@ function main() {
   test('AABCBBABC')
 }
 
-main()
+if (require.main === module) {
+  main()
+}
 
 export interface Block {
   pointer: {

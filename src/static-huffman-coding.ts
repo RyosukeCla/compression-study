@@ -9,7 +9,10 @@ function main() {
   const decoded = decode(encoded, codeTable)
   console.log('decoded:', decoded)
 }
-main()
+
+if (require.main === module) {
+  main()
+}
 
 interface CodeTable {
   symbolToCode: { [symbol: string]: string },

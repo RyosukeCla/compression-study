@@ -81,4 +81,7 @@ function main() {
   console.log(decoded)
 }
 
-main()
+if (require.main === module) {
+  main()
+}
+
