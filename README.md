@@ -26,3 +26,7 @@ $ yarn run lz77
 
 - references
   - https://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%95%E3%83%9E%E3%83%B3%E7%AC%A6%E5%8F%B7
+
+## Dijkstra's algorithm
+
+- not compression
