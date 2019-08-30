@@ -155,4 +155,6 @@ function main() {
   console.log('path', search(a, e, graph))
 }
 
-main()
+if (require.main === module) {
+  main()
+}
