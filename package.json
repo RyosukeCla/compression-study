@@ -7,7 +7,10 @@
     "bwt": "ts-node ./src/burrows-wheeler-transform.ts",
     "lzw": "ts-node ./src/lempel-ziv-welch.ts",
     "lz77": "ts-node ./src/lz77.ts",
-    "shc": "ts-node ./src/static-huffman-coding.ts"
+    "shc": "ts-node ./src/static-huffman-coding.ts",
+    "brotli": "ts-node ./src/brotli.ts",
+    "di": "ts-node ./src/dijkstra.ts",
+    "bst": "ts-node ./src/adt/BinarySearchTree.ts"
   },
   "devDependencies": {
     "@types/node": "^12.6.9",
