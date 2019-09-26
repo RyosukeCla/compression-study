@@ -10,7 +10,8 @@
     "shc": "ts-node ./src/static-huffman-coding.ts",
     "brotli": "ts-node ./src/brotli.ts",
     "di": "ts-node ./src/dijkstra.ts",
-    "bst": "ts-node ./src/adt/BinarySearchTree.ts"
+    "bst": "ts-node ./src/adt/BinarySearchTree.ts",
+    "bhc": "ts-node ./src/binary-huffman-coding.ts"
   },
   "devDependencies": {
     "@types/node": "^12.6.9",
