@@ -1,16 +1,12 @@
-function test(input: string, windowSize = 20, minSize = 3) {
-  console.log('input length:', input.length)
-  console.log('input:', input)
-  const encoded = encode(input, windowSize, minSize)
-  const encondedString = encoded.map(block => `${block.buffer ? block.buffer : `(${block.pointer.offset.toString()},${block.pointer.length})`}`).join('')
-  console.log('encoded:', encondedString)
-  console.log('encoded length:', encondedString.length)
-  const decoded = decode(encoded)
-  console.log('decoded', decoded)
-}
-
 function main() {
-  test('AABCBBABC')
+  const input = 'AABCBBABC';
+  const encodedBlocks = encode(input, { windowSize: 256, minWindowSize: 3 });
+  const encodedString = encodedBlocks.map(block => `${block.buffer ? block.buffer : `(${block.pointer.offset.toString()},${block.pointer.length})`}`).join('');
+  const decoded = decode(encodedBlocks);
+  console.log('input:', input);
+  console.log('encode:', encodedBlocks);
+  console.log('encode str:', encodedString);
+  console.log('decode:', decoded);
 }
 
 if (require.main === module) {
@@ -25,9 +21,9 @@ export interface Block {
   buffer?: string
 }
 
-function computePointer(searchBuffer: string, lookAheadBuffer: string, minSize: number): { offset: number, length: number } {
+function computePointer({ searchBuffer,lookAheadBuffer, minWindowSize = 0 }: { searchBuffer: string, lookAheadBuffer: string, minWindowSize?: number }): { offset: number, length: number } {
   const N = lookAheadBuffer.length;
-  for (let i = N; i >= minSize; i--) {
+  for (let i = N; i >= minWindowSize; i--) {
     const search = lookAheadBuffer.substring(0, i)
     const searchedIndex = searchBuffer.indexOf(search)
     if (searchedIndex > 0) {
@@ -41,13 +37,13 @@ function computePointer(searchBuffer: string, lookAheadBuffer: string, minSize: 
   return { offset: 0, length: 0 }
 }
 
-export function encode(input: string, windowSize: number, minSize: number): Block[] {
+export function encode(input: string, { windowSize = 256, minWindowSize = 3 }: { windowSize?: number, minWindowSize?: number }): Block[] {
   let codingPosition = 0
   const blocks: Block[] = []
   while (codingPosition < input.length) {
     const searchBuffer = input.substring(Math.max(0, codingPosition - windowSize), codingPosition)
     const lookAheadBuffer = input.substring(codingPosition, input.length)
-    const pointer = computePointer(searchBuffer, lookAheadBuffer, minSize)
+    const pointer = computePointer({ searchBuffer, lookAheadBuffer, minWindowSize })
     if (pointer.length === 0) {
       blocks.push({ pointer, buffer: lookAheadBuffer.charAt(0) })
       codingPosition += 1
