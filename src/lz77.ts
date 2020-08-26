@@ -1,12 +1,13 @@
 function main() {
-  const input = 'AABCBBABC';
-  const encodedBlocks = encode(input, { windowSize: 256, minWindowSize: 3 });
+  const input = 'ABCABCABCABC'
+  const encodedBlocks = encode(input, { windowSize: 2000, minWindowSize: 5 });
   const encodedString = encodedBlocks.map(block => `${block.buffer ? block.buffer : `(${block.pointer.offset.toString()},${block.pointer.length})`}`).join('');
   const decoded = decode(encodedBlocks);
   console.log('input:', input);
   console.log('encode:', encodedBlocks);
   console.log('encode str:', encodedString);
   console.log('decode:', decoded);
+  console.log('assert', input === decoded);
   console.log('input length:', input.length);
   console.log('encode str length:', encodedString.length);
   console.log('compression ratio:', encodedString.length / input.length);
@@ -24,7 +25,7 @@ export interface Block {
   buffer?: string
 }
 
-function computePointer({ searchBuffer,lookAheadBuffer, minWindowSize = 0 }: { searchBuffer: string, lookAheadBuffer: string, minWindowSize?: number }): { offset: number, length: number } {
+function computePointer({ searchBuffer, lookAheadBuffer, minWindowSize = 0 }: { searchBuffer: string, lookAheadBuffer: string, minWindowSize?: number }): { offset: number, length: number } {
   const N = lookAheadBuffer.length;
   for (let i = N; i >= minWindowSize; i--) {
     const search = lookAheadBuffer.substring(0, i)
@@ -44,8 +45,8 @@ export function encode(input: string, { windowSize = 256, minWindowSize = 3 }: {
   let codingPosition = 0
   const blocks: Block[] = []
   while (codingPosition < input.length) {
-    const searchBuffer = input.substring(Math.max(0, codingPosition - windowSize), codingPosition)
-    const lookAheadBuffer = input.substring(codingPosition, input.length)
+    const searchBuffer = input.substring(Math.max(0, codingPosition - windowSize), codingPosition);
+    const lookAheadBuffer = input.substring(codingPosition, codingPosition + windowSize);
     const pointer = computePointer({ searchBuffer, lookAheadBuffer, minWindowSize })
     if (pointer.length === 0) {
       blocks.push({ pointer, buffer: lookAheadBuffer.charAt(0) })
