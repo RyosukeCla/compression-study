@@ -7,6 +7,9 @@ function main() {
   console.log('encode:', encodedBlocks);
   console.log('encode str:', encodedString);
   console.log('decode:', decoded);
+  console.log('input length:', input.length);
+  console.log('encode str length:', encodedString.length);
+  console.log('compression ratio:', encodedString.length / input.length);
 }
 
 if (require.main === module) {
