@@ -1,15 +1,18 @@
+import fs from 'fs';
+import path from 'path';
 function main() {
-  const input = 'ABCABCABCABC'
-  const encodedBlocks = encode(input, { windowSize: 2000, minWindowSize: 5 });
-  const encodedString = encodedBlocks.map(block => `${block.buffer ? block.buffer : `(${block.pointer.offset.toString()},${block.pointer.length})`}`).join('');
-  const decoded = decode(encodedBlocks);
-  console.log('input:', input);
-  console.log('encode:', encodedBlocks);
-  console.log('encode str:', encodedString);
-  console.log('decode:', decoded);
-  console.log('assert', input === decoded);
-  console.log('input length:', input.length);
-  console.log('encode str length:', encodedString.length);
+  const input = fs.readFileSync(path.resolve(__dirname, './test.txt')).toString();
+  const startTime = Date.now();
+  const encodedBlocks = encode(input, { windowSize: 999, minWindowSize: 5 });
+  const encodedString = toString(encodedBlocks);
+  const encodedTime = Date.now();
+  const decoded = decode(parseToBlocks(encodedString));
+  const decodedTime = Date.now();
+  console.log('encode time:', encodedTime - startTime);
+  console.log('decode time:', decodedTime - encodedTime);
+  console.log('assert input === decoded:', input === decoded);
+  console.log('input size:', input.length);
+  console.log('encode size:', encodedString.length);
   console.log('compression ratio:', encodedString.length / input.length);
 }
 
@@ -23,6 +26,45 @@ export interface Block {
     length: number,
   },
   buffer?: string
+}
+
+function toString(blocks: Block[]): string {
+  const res: (string | number[])[] = []
+  let buffer = ''
+  for (let i = 0; i < blocks.length; i++) {
+    const block = blocks[i]
+    if (block.buffer) {
+      buffer += block.buffer;
+    } else {
+      if (buffer) {
+        res.push(buffer);
+        buffer = ''
+      }
+      res.push([block.pointer.offset,block.pointer.length])
+    }
+  }
+  if (buffer) {
+    res.push(buffer);
+  }
+  return JSON.stringify(res);
+}
+
+function parseToBlocks(str: string): Block[] {
+  const parsed: (string | number[])[] = JSON.parse(str);
+  return parsed.map(block => {
+    if (typeof block === 'string') {
+      return {
+        buffer: block
+      } as Block
+    } else {
+      return {
+        pointer: {
+          offset: block[0],
+          length: block[1]
+        }
+      } as Block
+    }
+  })
 }
 
 function computePointer({ searchBuffer, lookAheadBuffer, minWindowSize = 0 }: { searchBuffer: string, lookAheadBuffer: string, minWindowSize?: number }): { offset: number, length: number } {
